@@ -148,6 +148,60 @@ end
 
 local currentTarget = nil
 
+
+
+local player = game:GetService("Players").LocalPlayer
+local element = player.Backpack.Tool.ModuleReference
+local Elements = game:GetService("ReplicatedStorage").ReplicatedStorage.Abilities.Elements:GetChildren()
+
+
+spawn(function()
+while true do
+if getgenv().autofarm == true then
+for _, v1 in ipairs(Elements) do
+local name = tostring(element.Value)
+    if v1.Name == name then 
+        local v3 = v1:GetChildren()
+            for _, v2 in ipairs(v3) do
+    print(v2)
+                local args = {
+    [1] = v2,
+    [2] = {
+        ["Direction"] = nil --[[Vector3]],
+        ["Position"] = nil --[[Vector3]],
+        ["Origin"] = nil --[[Vector3]]
+    },
+    [3] = "Start"
+}
+
+game:GetService("ReplicatedStorage").ReplicatedStorage.Abilities.Templates.ToolTemplate.RemoteEvent:FireServer(unpack(args))
+------------
+         local args = {
+    [1] = v2,
+    [2] = {
+        ["Direction"] = nil --[[Vector3]],
+        ["Position"] = nil --[[Vector3]],
+        ["Origin"] = nil --[[Vector3]]
+    },
+    [3] = "End"
+}
+
+game:GetService("ReplicatedStorage").ReplicatedStorage.Abilities.Templates.ToolTemplate.RemoteEvent:FireServer(unpack(args))
+
+wait(1)
+end
+                end
+            end
+        end
+    end    
+end)
+print("hello")
+
+
+
+
+
+
 function chooseNewTarget()
     local spawnCFrame = getSpawnCFrame()
     if not spawnCFrame then
