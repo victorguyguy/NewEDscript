@@ -151,6 +151,20 @@ local currentTarget = nil
 
 
 local player = game:GetService("Players").LocalPlayer
+local player = game.Players.LocalPlayer
+
+local function waitForModuleReference()
+    local moduleReference = player.Backpack.Tool:WaitForChild("ModuleReference")
+
+    while not moduleReference.Value do
+        moduleReference.Changed:Wait()
+    end
+
+    print("ModuleReference is loaded!")
+end
+
+waitForModuleReference()
+
 local element = player.Backpack.Tool.ModuleReference
 local Elements = game:GetService("ReplicatedStorage").ReplicatedStorage.Abilities.Elements:GetChildren()
 
