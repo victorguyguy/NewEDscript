@@ -1,6 +1,37 @@
 
 print("working")
 wait(5)
+local lobbymap = game:GetService("Workspace").Map:GetChildren()
+for _,v1 in ipairs(lobbymap) do
+    if v1.Name == "Lobby" and v1:IsA("Folder") then 
+    print("you wont get kicked") 
+    elseif v1.Name == "BeginnersDungeon" or v1.Name == "JungleDungeon" or v1.Name == "SnowCastleDungeon" or v1.Name == "BeginnersDungeonEasy" then
+    spawn(function()
+   local Players = game:GetService("Players")
+   local LocalPlayer = Players.LocalPlayer
+   
+   function areMultiplePlayersInServer()
+       local playerCount = #Players:GetPlayers()
+       return playerCount > 1
+   end
+   
+   function kickLocalPlayer()
+       if LocalPlayer then
+           LocalPlayer:Kick("Possible chance that an admin joined you ")
+       end
+   end
+   
+   while true do
+       if areMultiplePlayersInServer() then
+           kickLocalPlayer()
+       end
+       wait(1) -- Adjust the frequency of checks as needed
+   end
+   
+   end)
+    
+    end
+end
 
 local GUI = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
@@ -154,6 +185,8 @@ local currentTarget = nil
 
 
 
+
+
 function chooseNewTarget()
     local spawnCFrame = getSpawnCFrame()
     if not spawnCFrame then
@@ -209,7 +242,24 @@ function teleportBehindMob(mob)
         LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
     end
 end
+spawn(function()
+while true do 
+wait(0.5)   
 
+                local player = game.Players.LocalPlayer
+     local humanoid = player.Character:FindFirstChild("Humanoid")
+
+ local fiftyPercentMaxHealth = humanoid.MaxHealth * 0.5
+
+    if humanoid.Health <= fiftyPercentMaxHealth then
+        game:GetService("ReplicatedStorage").ReplicatedStorage.Packages.Knit.Services.HealingService.RF.UseHeal:InvokeServer()
+        
+    else
+        
+    end
+end
+
+end)
 function attackMob(mob)
     if LocalPlayer.Character and LocalPlayer.Character.PrimaryPart and mob.PrimaryPart and mob:FindFirstChild("Humanoid") and mob.Humanoid.Health > 0 then
         local oldHealth = mob.Humanoid.Health
@@ -237,13 +287,51 @@ function attackMob(mob)
 end
 
 function pickupShit()
-    for _,v in next, workspace.Camera.Drops:GetChildren() do
-        if v:FindFirstChild("Center") and v.Center:FindFirstChild("ProximityPrompt") then
-            fireproximityprompt(v.Center.ProximityPrompt)
-            print()
-        end
-    end 
+    local dropsFolder = game:GetService("Workspace").Camera.Drops
+    
+    if dropsFolder then
+        for _, drop in ipairs(dropsFolder:GetChildren()) do
+            if drop:IsA("Model") then
+                local character = game:GetService("Workspace"):FindFirstChild("Ghostlyslayer5")
+                
+                if character and character:FindFirstChild("Humanoid") then
+                    local MaxHealth = character.Humanoid.MaxHealth
+                    local Percent = MaxHealth * 0.5
+                    local potion = drop:FindFirstChild("Potion") 
+                    local chestplate = drop:FindFirstChild("Chestplate") 
+                    local leggings = drop:FindFirstChild("Leggings")
+                    local player = game.Players.LocalPlayer.Character.Humanoid
+                    local player = game.Players.LocalPlayer
+
+if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+    local humanoid = player.Character:FindFirstChild("Humanoid")
+    
+   
+                    if potion and potion:IsA("Model") then
+                        if drop:FindFirstChild("Center") and drop.Center:FindFirstChild("ProximityPrompt") then
+                            fireproximityprompt(drop.Center.ProximityPrompt)
+                        end
+                    elseif chestplate and chestplate:IsA("Model") then
+    -- Do nothing (comment line)
+                    elseif leggings and leggings:IsA("Model") then
+    -- Do nothing (comment line)
+                    else
+    -- Do nothing (comment line)                    
 end
+                else
+                    print("Character or Humanoid not found")
+                end
+-- Get a reference to the local player
+
+
+            end
+        end
+    end
+end
+end
+-- Call the function
+
+
 
 function updateTarget()
     while getgenv().autofarm do
@@ -265,7 +353,9 @@ function updateTarget()
 
         if currentTarget then
             attackMob(currentTarget)
+pickupShit()
         end
+        
          if game:GetService("Players").LocalPlayer.PlayerGui.DungeonComplete.Main.Visible then
        
         retry()
