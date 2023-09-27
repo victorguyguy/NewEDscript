@@ -267,6 +267,7 @@ local player = game:GetService("Players").LocalPlayer
 local player = game.Players.LocalPlayer
 
 local function waitForModuleReference()
+    player.Backpack:WaitForChild("Tool")
     local moduleReference = player.Backpack.Tool:WaitForChild("ModuleReference")
 
     while not moduleReference.Value do
@@ -283,7 +284,7 @@ local Elements = game:GetService("ReplicatedStorage").ReplicatedStorage.Abilitie
 
 
 spawn(function()
-wait(5)
+wait(1)
 while true do
 if getgenv().autofarm == true then
 for _, v1 in ipairs(Elements) do
