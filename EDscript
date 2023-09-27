@@ -33,49 +33,6 @@ for _,v1 in ipairs(lobbymap) do
     end
 end
 
-local GUI = Instance.new("ScreenGui")
-local MainFrame = Instance.new("Frame")
-local TurnOnButton = Instance.new("TextButton")
-local TurnOffButton = Instance.new("TextButton")
-
-GUI.Parent = game:GetService("Players").LocalPlayer.PlayerGui
-GUI.Name = "AutoFarmGUI"
-GUI.ResetOnSpawn = false
-
-MainFrame.Parent = GUI
-MainFrame.BackgroundColor3 = Color3.new(0, 0, 0)
-MainFrame.BorderColor3 = Color3.new(1, 0, 0)
-MainFrame.BorderSizePixel = 2
-MainFrame.Position = UDim2.new(0.5, -100, 0, 10)
-MainFrame.Size = UDim2.new(0, 200, 0, 60)
-
-TurnOnButton.Parent = MainFrame
-TurnOnButton.BackgroundColor3 = Color3.new(0, 1, 0)
-TurnOnButton.Position = UDim2.new(0.1, 0, 0.5, -15)
-TurnOnButton.Size = UDim2.new(0, 80, 0, 30)
-TurnOnButton.Text = "Turn On"
-TurnOnButton.TextColor3 = Color3.new(1, 1, 1)
-TurnOnButton.TextSize = 14
-
-TurnOffButton.Parent = MainFrame
-TurnOffButton.BackgroundColor3 = Color3.new(1, 0, 0)
-TurnOffButton.Position = UDim2.new(0.6, 0, 0.5, -15)
-TurnOffButton.Size = UDim2.new(0, 80, 0, 30)
-TurnOffButton.Text = "Turn Off"
-TurnOffButton.TextColor3 = Color3.new(1, 1, 1)
-TurnOffButton.TextSize = 14
-
-local autofarmEnabled = true
-
-TurnOnButton.MouseButton1Click:Connect(function()
-    getgenv().autofarm = true
-    autofarmEnabled = true
-end)
-
-TurnOffButton.MouseButton1Click:Connect(function()
-    getgenv().autofarm = false
-    autofarmEnabled = false
-end)
 
 local args = {
     [1] = "Relics",
@@ -367,44 +324,41 @@ function pickupShit()
     if dropsFolder then
         for _, drop in ipairs(dropsFolder:GetChildren()) do
             if drop:IsA("Model") then
-                local character = game:GetService("Workspace"):FindFirstChild("Ghostlyslayer5")
-                
-                if character and character:FindFirstChild("Humanoid") then
-                    local MaxHealth = character.Humanoid.MaxHealth
-                    local Percent = MaxHealth * 0.5
-                    local potion = drop:FindFirstChild("Potion") 
-                    local chestplate = drop:FindFirstChild("Chestplate") 
-                    local leggings = drop:FindFirstChild("Leggings")
-                    local player = game.Players.LocalPlayer.Character.Humanoid
-                    local player = game.Players.LocalPlayer
+                local player = game.Players.LocalPlayer
+                if player then
+                    local character = game:GetService("Workspace"):FindFirstChild(player.Name)
 
-if player and player.Character and player.Character:FindFirstChild("Humanoid") then
-    local humanoid = player.Character:FindFirstChild("Humanoid")
-    
-   
-                    if potion and potion:IsA("Model") then
-                        if drop:FindFirstChild("Center") and drop.Center:FindFirstChild("ProximityPrompt") then
-                            fireproximityprompt(drop.Center.ProximityPrompt)
+                    if character and character:FindFirstChild("Humanoid") then
+                        local MaxHealth = character.Humanoid.MaxHealth
+                        local Percent = MaxHealth * 0.5
+                        local potion = drop:FindFirstChild("Potion") 
+                        local chestplate = drop:FindFirstChild("Chestplate") 
+                        local leggings = drop:FindFirstChild("Leggings")
+
+                        if potion and potion:IsA("Model") then
+                            if drop:FindFirstChild("Center") and drop.Center:FindFirstChild("ProximityPrompt") then
+                                fireproximityprompt(drop.Center.ProximityPrompt)
+                            end
+                        elseif chestplate and chestplate:IsA("Model") then
+                            -- Do nothing (comment line)
+                        elseif leggings and leggings:IsA("Model") then
+                            -- Do nothing (comment line)
+                        else
+                            -- Do nothing (comment line)                    
                         end
-                    elseif chestplate and chestplate:IsA("Model") then
-    -- Do nothing (comment line)
-                    elseif leggings and leggings:IsA("Model") then
-    -- Do nothing (comment line)
                     else
-    -- Do nothing (comment line)                    
-end
+                        print("Character or Humanoid not found")
+                    end
                 else
-                    print("Character or Humanoid not found")
+                    print("Local player not found")
                 end
--- Get a reference to the local player
-
-
             end
         end
     end
 end
-end
+
 -- Call the function
+
 
 
 
